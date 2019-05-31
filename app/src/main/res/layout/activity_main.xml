@@ -30,9 +30,8 @@
 
         <Switch
             android:id="@+id/open_switch"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
             android:layout_marginRight="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -67,6 +66,7 @@
             android:orientation="vertical"
             android:layout_height="60dp">
             <ImageView
+                android:id="@+id/img_double_click"
                 android:layout_width="40dp"
                 android:layout_gravity="center"
                 android:layout_height="40dp"

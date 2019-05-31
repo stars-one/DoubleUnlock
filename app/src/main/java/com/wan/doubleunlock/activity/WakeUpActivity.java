@@ -2,9 +2,11 @@ package com.wan.doubleunlock.activity;
 
 import android.app.KeyguardManager;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,6 +20,7 @@ public class WakeUpActivity extends BaseActivity {
 
 
     private ConstraintLayout mWakeupLayout;
+    private int currentFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +50,8 @@ public class WakeUpActivity extends BaseActivity {
 
     @Override
     public void initData() {
-
+        SharedPreferences preferences = getSharedPreferences("data", MODE_PRIVATE);//获得SharedPreferences的对象
+        currentFlag = preferences.getInt("doubleClickMode", 0);//默认为0
     }
 
     @Override
@@ -57,16 +61,38 @@ public class WakeUpActivity extends BaseActivity {
         mWakeupLayout.setOnTouchListener(new MyTouchListener(new MyTouchListener.DoubleClickCallback() {
             @Override
             public void onDoubleClick() {
-                wakeUpAndUnlock(mWakeupLayout.getContext());
+                switch (currentFlag) {
+                    case 0:
+                        wakeUpAndUnlock(mWakeupLayout.getContext());
+                        break;
+                    case 1:
+                        wakeUp();
+                        break;
+                    default:
+                        break;
+                }
+
             }
         }));
 
     }
 
-  
+    /**
+     * 唤醒
+     *
+     */
+    private void wakeUp() {
+        Log.e("--测试", "wakeUp: 进入唤醒");
+        finish();
+    }
 
-
+    /**
+     * 唤醒并解锁
+     *
+     * @param context
+     */
     public void wakeUpAndUnlock(Context context) {
+        Log.e("--测试", "wakeUp: 进入解锁");
         //屏锁管理器
         KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
         KeyguardManager.KeyguardLock kl = km.newKeyguardLock("unLock");
